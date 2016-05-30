@@ -17,7 +17,8 @@ class UploadController {
     FileUploadService fileUploadService
 
     /**
-     * This endpoint accepts the file in binary form, uploaded by the AJAX based application.
+     * This endpoint accepts the file in the binary form, uploaded by the AJAX based application. This endpoint saves
+     * the file in the temporary directory of the local server which will be cleaned automatically by the system itself.
      *
      * @example
      *
@@ -44,7 +45,7 @@ class UploadController {
      * This is done because if you install this plugin and forget to protect this endpoint then someone may bloat
      * your server by uploading junk files.
      */
-    def index() {
+    def temporarily() {
         if (!Holders.getFlatConfig()["wizpanda.plugins.kernel.allow.file.upload"]) {
             log.warn "App is not allowing to upload files"
             return
@@ -52,7 +53,7 @@ class UploadController {
 
         log.debug "Temporary upload with $params"
 
-        File file = fileUploadService.saveUploadedFile(params.file)
+        File file = fileUploadService.saveTemporarily(params.file)
         Map result = [filepath: file.getPath(), filename: file.getName()]
 
         // Work around for IE

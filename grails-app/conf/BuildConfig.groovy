@@ -14,6 +14,11 @@ grails.project.fork = [
 ]
 
 grails.project.dependency.resolver = "maven" // or ivy
+
+grails.project.dependency.distribution = {
+    remoteRepository(id: "wizpandaRepo", url: "https://api.bintray.com/maven/wizpanda/grails-plugins/multi-file-upload/;publish=1")
+}
+
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global") {

@@ -11,8 +11,8 @@ buildscript {
     }
 }
 
-version "0.1"
-group "multi.file.upload"
+version "0.0.2"
+group "com.wizpanda.plugins"
 
 apply plugin:"eclipse"
 apply plugin:"idea"

@@ -1,4 +1,4 @@
-package multi.file.upload
+package com.wizpanda
 
 import grails.plugins.Plugin
 

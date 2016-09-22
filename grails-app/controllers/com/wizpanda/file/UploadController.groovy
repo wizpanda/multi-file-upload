@@ -35,7 +35,7 @@ class UploadController {
      *      }
      * </pre>
      *
-     * Note: By default this endpoint is blocked to allow upload. You need to set following to your config in order
+     * Note: By default this endpoint is blocked to allow upload. You need to set following to your service in order
      * to allow uploading files using this endpoint:
      *
      * <pre>

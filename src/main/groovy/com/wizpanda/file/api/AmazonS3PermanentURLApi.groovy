@@ -3,12 +3,10 @@ package com.wizpanda.file.api
 import com.wizpanda.file.StoredFile
 import com.wizpanda.file.service.AmazonS3UploaderService
 import org.jclouds.aws.s3.blobstore.options.AWSS3PutObjectOptions
-import org.jclouds.blobstore.domain.Blob
 import org.jclouds.s3.domain.CannedAccessPolicy
 import org.jclouds.s3.domain.S3Object
 import org.jclouds.s3.domain.internal.MutableObjectMetadataImpl
 import org.jclouds.s3.domain.internal.S3ObjectImpl
-import org.springframework.web.multipart.MultipartFile
 
 class AmazonS3PermanentURLApi extends AmazonS3Api {
 
@@ -17,33 +15,27 @@ class AmazonS3PermanentURLApi extends AmazonS3Api {
     }
 
     @Override
-    StoredFile saveFile(File file) {
-        authenticate()
-        upload(file)
-        close()
+    void saveNativeFile() {
+        this.authenticate()
 
-        return null
-    }
-
-    String upload(File file) {
         AWSS3PutObjectOptions fileOptions = new AWSS3PutObjectOptions()
         fileOptions.withAcl(CannedAccessPolicy.PUBLIC_READ)
 
-        String fileName = getFileName(file)
+        String fileName = getFileName(this.rawFile)
+        String containerName = getContainerName()
 
         MutableObjectMetadataImpl mutableObjectMetadata = new MutableObjectMetadataImpl()
         mutableObjectMetadata.setKey(fileName)
-        setContentType(mutableObjectMetadata, file)
+        setContentType(mutableObjectMetadata, this.rawFile)
 
         S3Object s3Object = new S3ObjectImpl(mutableObjectMetadata)
-        s3Object.setPayload(file)
+        s3Object.setPayload(this.rawFile)
 
-        return client.putObject(getContainerName(), s3Object, fileOptions)
-        /*Blob blob = blobStore.blobBuilder("blob-name")
-                .payload(file)
-                .contentLength(file.size())
-                .build()
+        client.putObject(containerName, s3Object, fileOptions)
 
-        blobStore.putBlob(getContainerName(), blob)*/
+        this.gormFile.name = fileName
+        this.gormFile.url = client.getObject(containerName, fileName, null).metadata.uri
+
+        this.close()
     }
 }

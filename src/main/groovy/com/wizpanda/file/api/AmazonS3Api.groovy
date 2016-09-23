@@ -1,7 +1,9 @@
 package com.wizpanda.file.api
 
+import com.wizpanda.file.StoredFile
 import com.wizpanda.file.service.AmazonS3UploaderService
 import grails.util.Environment
+import grails.util.GrailsStringUtils
 import org.jclouds.ContextBuilder
 import org.jclouds.aws.s3.AWSS3Client
 import org.jclouds.blobstore.BlobStore
@@ -10,7 +12,7 @@ import org.jclouds.s3.domain.internal.MutableObjectMetadataImpl
 
 import javax.activation.MimetypesFileTypeMap
 
-abstract class AmazonS3Api implements StorageApi {
+abstract class AmazonS3Api extends AbstractStorageApi {
 
     BlobStore blobStore
     AWSS3Client client
@@ -46,7 +48,11 @@ abstract class AmazonS3Api implements StorageApi {
 
     @Override
     String getFileName(File file) {
-        return UUID.randomUUID().toString()
+        String name = UUID.randomUUID().toString()
+        String originalFileName = file.name
+        String extension = GrailsStringUtils.substringAfterLast(originalFileName, ".")
+
+        return name + "." + extension
     }
 
     String getContainerName() {
@@ -60,5 +66,15 @@ abstract class AmazonS3Api implements StorageApi {
 
     String getDirectory() {
 
+    }
+
+    @Override
+    void validateRawFile() {
+
+    }
+
+    @Override
+    void deleteNativeFile(StoredFile file) {
+        // TODO implement me
     }
 }

@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-version "0.0.2"
+version "0.0.3"
 group "com.wizpanda.plugins"
 
 apply plugin:"eclipse"

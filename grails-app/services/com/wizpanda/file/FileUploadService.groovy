@@ -1,47 +1,46 @@
 package com.wizpanda.file
 
-import org.springframework.context.MessageSource
-import org.springframework.web.multipart.commons.CommonsMultipartFile
+import com.wizpanda.file.exception.FileUploadException
+import com.wizpanda.file.exception.InvalidFileGroupException
+import com.wizpanda.file.service.UploaderService
+import org.springframework.web.multipart.MultipartFile
 
-import java.nio.file.Files
+import javax.annotation.PostConstruct
 
 class FileUploadService {
 
-    MessageSource messageSource
+    private static Map<String, UploaderService> services = [:]
 
-    /**
-     * Save the uploaded multipart file in the temporary directory of the local server which will be cleaned
-     * automatically by the system itself.
-     *
-     * @param multipartFile
-     * @return Saved file in a temporary location
-     * @throws FileNotFoundException
-     * @throws IOException
-     */
-    File saveTemporarily(CommonsMultipartFile multipartFile) throws FileNotFoundException, IOException {
-        if (!multipartFile || multipartFile.isEmpty()) {
-            log.debug "Received file is either empty or does not exists"
+    StoredFile save(MultipartFile multipartFile, String groupName) throws FileUploadException {
+        // TODO Add check for validating group name
 
-            throw new FileNotFoundException(messageSource.getMessage("kernel.uploaded.file.empty", null, null))
-        }
+        return services.get(groupName).instance().save(multipartFile)
+    }
 
-        try {
-            String originalFilename = multipartFile.getOriginalFilename()
-            File temporaryDirectory = Files.createTempDirectory(null).toFile()
+    @PostConstruct
+    void verifyConfig() {
+        //log.debug "Verifying all service"
+        println "Verifying all service"
 
-            log.debug "Uploaded file [$originalFilename] will be saved in [${temporaryDirectory.absolutePath}]"
+        ConfigHelper.allGroups.each { Map.Entry groupConfigEntry ->
+            String groupName = groupConfigEntry.key.toString()
+            Map groupConfigValue = groupConfigEntry.value
 
-            File temporaryFile = new File(temporaryDirectory, originalFilename)
-            multipartFile.transferTo(temporaryFile)
+            if (!groupConfigValue.service) {
+                throw new InvalidFileGroupException("The service API missing for [${groupName}]")
+            }
 
-            return temporaryFile
-        } catch (IllegalStateException e) {
-            log.error "Problem saving file", e
-            throw new FileNotFoundException(e.message)
+            Class<? extends UploaderService> serviceClass = groupConfigValue.service
 
-        } catch (IOException e) {
-            log.error "Exception saving file", e
-            throw e
+            UploaderService service
+            try {
+                service = serviceClass.newInstance(groupName, groupConfigValue)
+            } catch (IllegalAccessException | InstantiationException | RuntimeException e) {
+                log.error "Error creating uploader service object", e
+                throw new InvalidFileGroupException("Error while creating the uploader service object");
+            }
+
+            services[service.groupName] = service
         }
     }
 }

@@ -17,6 +17,12 @@ class FileUploadService {
         return services.get(groupName).instance().save(multipartFile)
     }
 
+    StoredFile save(File file, String groupName) throws FileUploadException {
+        // TODO Add check for validating group name
+
+        return services.get(groupName).instance().save(file)
+    }
+
     @PostConstruct
     void verifyConfig() {
         //log.debug "Verifying all service"

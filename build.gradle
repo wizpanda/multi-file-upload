@@ -1,13 +1,11 @@
 buildscript {
-    ext {
-        grailsVersion = project.grailsVersion
-    }
     repositories {
         mavenLocal()
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.8.2"
     }
 }
 
@@ -19,21 +17,9 @@ apply plugin:"idea"
 apply plugin:"org.grails.grails-plugin"
 apply plugin:"org.grails.grails-plugin-publish"
 
-ext {
-    grailsVersion = project.grailsVersion
-    gradleWrapperVersion = project.gradleWrapperVersion
-}
-
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.grails:grails-bom:$grailsVersion"
-    }
-    applyMavenExclusions false
 }
 
 dependencies {
@@ -48,6 +34,13 @@ dependencies {
     provided "org.grails:grails-plugin-domain-class"
     testCompile "org.grails:grails-plugin-testing"
 }
+
+bootRun {
+    jvmArgs("-Dspring.output.ansi.enabled=always")
+    addResources = true
+}
+// enable if you wish to package this plugin as a standalone application
+bootRepackage.enabled = false
 
 grailsPublish {
     githubSlug = "wizpanda/multi-file-upload"

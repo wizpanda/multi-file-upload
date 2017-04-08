@@ -1,4 +1,4 @@
-package multi.file.upload
+package com.wizpanda
 
 import grails.boot.*
 import grails.boot.config.GrailsAutoConfiguration

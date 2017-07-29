@@ -4,7 +4,7 @@ A plugin for multi purpose file upload functionality for Grails 3 application. T
 to the following destinations:
 
 1. To the local server or the local system
-2. To the Amazon S3 storage (coming soon)
+2. To the Amazon S3 storage (can be deleted as well)
 3. To the Rackspace cloud storage (coming soon)
 
 ## Installation

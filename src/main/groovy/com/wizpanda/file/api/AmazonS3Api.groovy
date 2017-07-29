@@ -4,6 +4,7 @@ import com.wizpanda.file.StoredFile
 import com.wizpanda.file.service.AmazonS3UploaderService
 import grails.util.Environment
 import grails.util.GrailsStringUtils
+import groovy.util.logging.Slf4j
 import org.jclouds.ContextBuilder
 import org.jclouds.aws.s3.AWSS3Client
 import org.jclouds.blobstore.BlobStore
@@ -12,6 +13,7 @@ import org.jclouds.s3.domain.internal.MutableObjectMetadataImpl
 
 import javax.activation.MimetypesFileTypeMap
 
+@Slf4j
 abstract class AmazonS3Api extends AbstractStorageApi {
 
     BlobStore blobStore
@@ -20,15 +22,15 @@ abstract class AmazonS3Api extends AbstractStorageApi {
     AmazonS3UploaderService service
 
     void authenticate() {
-        println service.accessKey
-        println service.accessSecret
         context = ContextBuilder.newBuilder("aws-s3")
                 .credentials(service.accessKey, service.accessSecret)
                 .buildView(BlobStoreContext.class)
-        println "Context created ${context.class}"
+
+        log.info "Context created ${context.class}"
 
         blobStore = context.getBlobStore()
-        println "BlobStore ${blobStore.class}"
+
+        log.info "BlobStore ${blobStore.class}"
 
         // Storing wrapped Api of S3Client with Apache JCloud
         client = context.unwrap().getApi()
@@ -75,6 +77,21 @@ abstract class AmazonS3Api extends AbstractStorageApi {
 
     @Override
     void deleteNativeFile(StoredFile file) {
-        // TODO implement me
+        String container = this.containerName
+        String fileName = file.name
+
+        log.info "Deleting file ${file} with name ${fileName} from container ${container}."
+
+        this.authenticate()
+
+        if (!client.objectExists(container, fileName)) {
+            log.warn "File not present in the S3 bucket."
+            return
+        }
+
+        client.deleteObject(container, fileName)
+        file.delete(flush: true)
+
+        this.close()
     }
 }

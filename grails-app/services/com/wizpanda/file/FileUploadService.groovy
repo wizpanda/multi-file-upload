@@ -23,6 +23,15 @@ class FileUploadService {
         return services.get(groupName).instance().save(file)
     }
 
+    void delete(StoredFile file) {
+        if (!file) {
+            log.warn 'StoredFile is null.'
+            return
+        }
+
+        services.get(file.groupName).instance().delete(file)
+    }
+
     @PostConstruct
     void verifyConfig() {
         //log.debug "Verifying all service"

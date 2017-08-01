@@ -1,5 +1,6 @@
 package com.wizpanda.file.api
 
+import com.wizpanda.file.ConfigHelper
 import com.wizpanda.file.StoredFile
 import com.wizpanda.file.service.AmazonS3UploaderService
 import grails.util.Environment
@@ -9,7 +10,10 @@ import org.jclouds.ContextBuilder
 import org.jclouds.aws.s3.AWSS3Client
 import org.jclouds.blobstore.BlobStore
 import org.jclouds.blobstore.BlobStoreContext
+import org.jclouds.http.HttpResponseException
+import org.jclouds.s3.domain.CannedAccessPolicy
 import org.jclouds.s3.domain.internal.MutableObjectMetadataImpl
+import org.jclouds.s3.options.CopyObjectOptions
 
 import javax.activation.MimetypesFileTypeMap
 
@@ -57,6 +61,15 @@ abstract class AmazonS3Api extends AbstractStorageApi {
         return name + "." + extension
     }
 
+    @Override
+    String getFileName(StoredFile file) {
+        String name = UUID.randomUUID().toString()
+        String originalFileName = file.originalName
+        String extension = GrailsStringUtils.substringAfterLast(originalFileName, ".")
+
+        return name + "." + extension
+    }
+
     String getContainerName() {
         String name = service.container
         if (Environment.current != Environment.PRODUCTION) {
@@ -85,13 +98,54 @@ abstract class AmazonS3Api extends AbstractStorageApi {
         this.authenticate()
 
         if (!client.objectExists(container, fileName)) {
-            log.warn "File not present in the S3 bucket."
+            log.warn "File not present in the S3 bucket, deleting the Stored file instance."
+
+            file.delete()
+            this.close()
+
             return
         }
 
         client.deleteObject(container, fileName)
-        file.delete(flush: true)
+        file.delete()
 
         this.close()
+    }
+
+    @Override
+    StoredFile cloneStoredFile(StoredFile file, String newGroupName) {
+        StoredFile clonedFile = new StoredFile()
+        clonedFile.originalName = file.originalName
+        clonedFile.groupName = newGroupName
+        clonedFile.size = file.size
+        clonedFile.name = getFileName(file)
+
+        String currentContainer = ConfigHelper.getGroup(file.groupName).container ?:
+                ConfigHelper.getFlatConfig("global.amazon.container")
+
+        String newContainer = getContainerName()
+
+        CopyObjectOptions fileOptions = new CopyObjectOptions()
+        // For now using the same policy of original file, it gets changed to private scope if not overridden.
+        fileOptions.overrideAcl(CannedAccessPolicy.PUBLIC_READ)
+
+        try {
+            this.authenticate()
+            client.copyObject(currentContainer, file.name, newContainer, clonedFile.name, fileOptions)
+            clonedFile.url = client.getObject(newContainer, clonedFile.name, null).metadata.uri
+
+            this.gormFile = clonedFile
+            this.gormFile.uploadedOn = new Date()
+
+            this.saveGORMFile()
+
+            log.info "Successfully cloned StoredFile: ${file} as ${this.gormFile}"
+
+            return this.gormFile
+        } catch (HttpResponseException hre) {
+            log.warn 'Could not copy StoredFile!', hre
+        } finally {
+            this.close()
+        }
     }
 }

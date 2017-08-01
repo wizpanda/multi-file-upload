@@ -12,7 +12,7 @@ class StoredFile {
     Date uploadedOn = new Date()
     Map meta = [:]
 
-    void delete() {
+    FileUploadService getFileUploadService() {
         FileUploadService fileUploadService = Holders.getApplicationContext()['fileUploadService']
 
         if (!fileUploadService) {
@@ -20,6 +20,14 @@ class StoredFile {
             return
         }
 
-        fileUploadService.delete(this)
+        return fileUploadService
+    }
+
+    void remove() {
+        fileUploadService?.delete(this)
+    }
+
+    void cloneFile(String newGroupName) {
+        fileUploadService?.cloneFile(this, newGroupName)
     }
 }

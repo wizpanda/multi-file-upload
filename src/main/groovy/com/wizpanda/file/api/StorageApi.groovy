@@ -17,6 +17,8 @@ interface StorageApi {
 
     String getFileName(File file)
 
+    String getFileName(StoredFile file)
+
     StoredFile saveGORMFile() throws FileUploadException
 
     /**
@@ -35,4 +37,7 @@ interface StorageApi {
     StoredFile save(MultipartFile multipartFile) throws FileUploadException
 
     void delete(StoredFile file)
+
+    // Used to clone an instance of StoredFile and get the new StoredFile instance.
+    StoredFile cloneStoredFile(StoredFile file, String newGroupName)
 }

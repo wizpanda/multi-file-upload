@@ -23,6 +23,29 @@ class FileUploadService {
         return services.get(groupName).instance().save(file)
     }
 
+    void delete(StoredFile file) {
+        if (!file) {
+            log.warn 'StoredFile is null.'
+            return
+        }
+
+        services.get(file.groupName).instance().delete(file)
+    }
+
+    void cloneFile(StoredFile file, String newGroupName) {
+        if (!file) {
+            log.warn 'StoredFile cannot be null.'
+            return
+        }
+
+        if (!newGroupName) {
+            log.warn 'New Group Name cannot be null.'
+            return
+        }
+
+        services.get(newGroupName).instance().cloneStoredFile(file, newGroupName)
+    }
+
     @PostConstruct
     void verifyConfig() {
         //log.debug "Verifying all service"

@@ -7,6 +7,13 @@ to the following destinations:
 2. To the Amazon S3 storage (can be deleted as well)
 3. To the Rackspace cloud storage (coming soon)
 
+## Compatibility
+
+Grails Version | Supported
+--------- | ---------
+<= 3.2.11         |  >= v0.0.6
+>= 3.3.0         |  >= v0.0.7
+
 ## Installation
 
 ### Grails 3

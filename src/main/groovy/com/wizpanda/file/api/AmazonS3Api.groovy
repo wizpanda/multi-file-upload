@@ -34,7 +34,7 @@ abstract class AmazonS3Api extends AbstractStorageApi {
 
         blobStore = context.getBlobStore()
 
-        log.info "BlobStore ${blobStore.class}"
+        //log.info "BlobStore ${blobStore.class}"
 
         // Storing wrapped Api of S3Client with Apache JCloud
         client = context.unwrap().getApi()
@@ -44,9 +44,10 @@ abstract class AmazonS3Api extends AbstractStorageApi {
         context.close()
     }
 
-    void setContentType(MutableObjectMetadataImpl mutableObjectMetadata, File file) {
-        String contentType = new MimetypesFileTypeMap().getContentType(file.name)
+    void setContentType(MutableObjectMetadataImpl mutableObjectMetadata) {
+        String contentType = new MimetypesFileTypeMap().getContentType(this.rawFile.name)
 
+        log.debug "ContentType for [${this.rawFile.name}] is [$contentType]"
         if (contentType) {
             mutableObjectMetadata.getContentMetadata().setContentType(contentType)
         }
@@ -77,10 +78,6 @@ abstract class AmazonS3Api extends AbstractStorageApi {
         }
 
         return name
-    }
-
-    String getDirectory() {
-
     }
 
     @Override
@@ -147,5 +144,15 @@ abstract class AmazonS3Api extends AbstractStorageApi {
         } finally {
             this.close()
         }
+    }
+
+    void setCacheControl(MutableObjectMetadataImpl mutableObjectMetadata) {
+        Long cacheControlSeconds = this.service.flatGroupConfig.cacheControlSeconds
+
+        if (!cacheControlSeconds) {
+            return
+        }
+
+        mutableObjectMetadata.setCacheControl("max-age=$cacheControlSeconds, public, must-revalidate, proxy-revalidate")
     }
 }

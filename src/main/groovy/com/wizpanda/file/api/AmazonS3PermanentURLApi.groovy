@@ -5,7 +5,6 @@ import groovy.util.logging.Slf4j
 import org.jclouds.aws.s3.blobstore.options.AWSS3PutObjectOptions
 import org.jclouds.s3.domain.S3Object
 import org.jclouds.s3.domain.internal.MutableObjectMetadataImpl
-import org.jclouds.s3.domain.internal.S3ObjectImpl
 
 @Slf4j
 class AmazonS3PermanentURLApi extends AmazonS3Api {
@@ -21,13 +20,17 @@ class AmazonS3PermanentURLApi extends AmazonS3Api {
         String fileName = getFileName(this.rawFile)
         String containerName = getContainerName()
 
-        MutableObjectMetadataImpl mutableObjectMetadata = new MutableObjectMetadataImpl()
+        S3Object s3Object = client.newS3Object()
+        s3Object.setPayload(this.rawFile)
+
+        MutableObjectMetadataImpl mutableObjectMetadata = s3Object.getMetadata()
         mutableObjectMetadata.setKey(fileName)
         setCacheControl(mutableObjectMetadata)
+        /**
+         * Always set the content-type after setting the payload so that it does not get overridden.
+         * https://groups.google.com/d/msg/jclouds/FMuEbPo9M_k/kaXCKkuOKdMJ
+         */
         setContentType(mutableObjectMetadata)
-
-        S3Object s3Object = new S3ObjectImpl(mutableObjectMetadata)
-        s3Object.setPayload(this.rawFile)
 
         AWSS3PutObjectOptions fileOptions = new AWSS3PutObjectOptions()
         setAccessPolicy(fileOptions)

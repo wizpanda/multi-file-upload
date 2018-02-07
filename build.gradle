@@ -8,13 +8,13 @@ buildscript {
     }
 }
 
-version "0.0.7"
+version "0.1.0"
 group "com.wizpanda.plugins"
 
-apply plugin:"eclipse"
-apply plugin:"idea"
-apply plugin:"org.grails.grails-plugin"
-apply plugin:"org.grails.grails-plugin-publish"
+apply plugin: "eclipse"
+apply plugin: "idea"
+apply plugin: "org.grails.grails-plugin"
+apply plugin: "org.grails.grails-plugin-publish"
 
 repositories {
     mavenLocal()
@@ -50,5 +50,5 @@ grailsPublish {
     }
     title = "Multi File Upload"
     desc = "A Grails plugin to provide multi purpose file upload functionality."
-    developers = [sagrawal14: "Shashank Agrawal"]
+    developers = [sagrawal31: "Shashank Agrawal"]
 }

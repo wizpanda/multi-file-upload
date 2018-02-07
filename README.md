@@ -58,6 +58,13 @@ fileUpload {
 
 ```
 
+### Using in controllers or services
+
+```groovy
+fileUploadService.save(params.file, 'sliderImages')
+
+```
+
 ## Releasing new version
 
 1. Change the version in the `build.gradle`.

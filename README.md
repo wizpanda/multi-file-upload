@@ -7,6 +7,8 @@ to the following destinations:
 2. To the Amazon S3 storage (can be deleted as well)
 3. To the Rackspace cloud storage (coming soon)
 
+**The upload APIs are highly customizable so you can always override the classes or add your own implementation.**
+
 ## Compatibility
 
 Grails Version | Supported
@@ -14,9 +16,9 @@ Grails Version | Supported
 <= 3.2.11         |  >= v0.0.6
 >= 3.3.0         |  >= v0.0.7
 
-## Installation
+## Installation & Usage
 
-### Grails 3
+### Installation
 
 Add the following to `build.gradle` file of your Grails 3 application
 
@@ -29,7 +31,31 @@ maven { url "http://dl.bintray.com/wizpanda/grails-plugins" }
 **Under `dependencies` section**
 
 ```groovy
-compile "com.wizpanda.plugins:multi-file-upload:1.0.0"
+compile "com.wizpanda.plugins:multi-file-upload:<version>"
+
+```
+
+### Configuration
+
+In the `application.groovy` file, define your groups & AWS configuration. For example:
+
+```groovy
+fileUpload {
+    global {
+        amazon {
+            accessKey = "ALIAI4VT2YYNNPSV3YGQ2"
+            accessSecret = "803a3E2Ul0HkImA2kLQAyF4ngM3P6StQGEMUC"
+        }
+    }
+    groups {
+        sliderImages {
+            service = com.wizpanda.file.service.AmazonS3UploaderService
+            container = "example-slider-images"
+            cacheControlSeconds = 604800    // 1 week
+        }
+    }
+}
+
 ```
 
 ## Releasing new version

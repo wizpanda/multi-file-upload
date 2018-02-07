@@ -66,7 +66,7 @@ class FileUploadService {
                 service = serviceClass.newInstance(groupName, groupConfigValue)
             } catch (IllegalAccessException | InstantiationException | RuntimeException e) {
                 log.error "Error creating uploader service object", e
-                throw new InvalidFileGroupException("Error while creating the uploader service object");
+                throw new InvalidFileGroupException("Error while creating the uploader service object")
             }
 
             services[service.groupName] = service

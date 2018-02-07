@@ -8,6 +8,7 @@ import grails.util.GrailsStringUtils
 import groovy.util.logging.Slf4j
 import org.jclouds.ContextBuilder
 import org.jclouds.aws.s3.AWSS3Client
+import org.jclouds.aws.s3.blobstore.options.AWSS3PutObjectOptions
 import org.jclouds.blobstore.BlobStore
 import org.jclouds.blobstore.BlobStoreContext
 import org.jclouds.http.HttpResponseException
@@ -154,5 +155,15 @@ abstract class AmazonS3Api extends AbstractStorageApi {
         }
 
         mutableObjectMetadata.setCacheControl("max-age=$cacheControlSeconds, public, must-revalidate, proxy-revalidate")
+    }
+
+    void setAccessPolicy(AWSS3PutObjectOptions fileOptions) {
+        Boolean makePrivate = this.service.flatGroupConfig.makePrivate
+
+        if (makePrivate) {
+            fileOptions.withAcl(CannedAccessPolicy.PRIVATE)
+        } else {
+            fileOptions.withAcl(CannedAccessPolicy.PUBLIC_READ)
+        }
     }
 }

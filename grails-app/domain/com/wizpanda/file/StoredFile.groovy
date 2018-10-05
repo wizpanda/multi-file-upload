@@ -4,6 +4,8 @@ import grails.util.Holders
 
 class StoredFile {
 
+    boolean markedForDeletion
+
     String originalName
     String name
     String url

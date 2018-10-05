@@ -21,7 +21,7 @@ class AmazonS3UploaderService extends UploaderService {
          * TODO https://github.com/aws/aws-sdk-java/issues/740
          * TODO Planned to be released in https://github.com/jclouds/jclouds/pull/678
          */
-        //System.setProperty("com.amazonaws.services.s3.enableV4", "true")
+        System.setProperty("com.amazonaws.services.s3.enableV4", "true")
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.wizpanda.file
 
+import com.wizpanda.file.model.StoredFileBlob
 import grails.util.Holders
+import org.jclouds.blobstore.domain.Blob
 
 class StoredFile {
 
@@ -15,14 +17,13 @@ class StoredFile {
     Map meta = [:]
 
     FileUploadService getFileUploadService() {
-        FileUploadService fileUploadService = Holders.getApplicationContext()['fileUploadService']
+        Holders.getApplicationContext()['fileUploadService']
+    }
 
-        if (!fileUploadService) {
-            log.warn "FileUploadService bean not injected!"
-            return
-        }
+    StoredFileBlob getBlob() {
+         Blob blob = getFileUploadService().getStorageApi(this.groupName).getBlob(this)
 
-        return fileUploadService
+        return new StoredFileBlob(blob)
     }
 
     void remove() {

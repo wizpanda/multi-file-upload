@@ -11,6 +11,7 @@ import org.jclouds.aws.s3.AWSS3Client
 import org.jclouds.aws.s3.blobstore.options.AWSS3PutObjectOptions
 import org.jclouds.blobstore.BlobStore
 import org.jclouds.blobstore.BlobStoreContext
+import org.jclouds.blobstore.domain.Blob
 import org.jclouds.http.HttpResponseException
 import org.jclouds.s3.domain.CannedAccessPolicy
 import org.jclouds.s3.domain.internal.MutableObjectMetadataImpl
@@ -165,5 +166,21 @@ abstract class AmazonS3Api extends AbstractStorageApi {
         } else {
             fileOptions.withAcl(CannedAccessPolicy.PUBLIC_READ)
         }
+    }
+
+    Blob getBlob(StoredFile storedFile) throws FileNotFoundException {
+        String container = this.containerName
+        String fileName = storedFile.name
+
+        this.authenticate()
+
+        Blob blobFile = blobStore.getBlob(container, fileName)
+        if (!blobFile) {
+            this.close()
+            throw new FileNotFoundException("File not found in ${container}")
+        }
+        this.close()
+
+        return blobFile
     }
 }

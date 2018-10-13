@@ -3,6 +3,7 @@ package com.wizpanda.file.api
 import com.wizpanda.file.StoredFile
 import com.wizpanda.file.exception.FileUploadException
 import com.wizpanda.file.service.UploaderService
+import org.jclouds.blobstore.domain.Blob
 import org.springframework.web.multipart.MultipartFile
 
 interface StorageApi {
@@ -40,4 +41,6 @@ interface StorageApi {
 
     // Used to clone an instance of StoredFile and get the new StoredFile instance.
     StoredFile cloneStoredFile(StoredFile file, String newGroupName)
+
+    Blob getBlob(StoredFile storedFile)
 }

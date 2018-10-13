@@ -1,5 +1,6 @@
 package com.wizpanda.file
 
+import com.wizpanda.file.api.StorageApi
 import com.wizpanda.file.exception.FileUploadException
 import com.wizpanda.file.exception.InvalidFileGroupException
 import com.wizpanda.file.service.UploaderService
@@ -14,13 +15,13 @@ class FileUploadService {
     StoredFile save(MultipartFile multipartFile, String groupName) throws FileUploadException {
         // TODO Add check for validating group name
 
-        return services.get(groupName).instance().save(multipartFile)
+        return getStorageApi(groupName).save(multipartFile)
     }
 
     StoredFile save(File file, String groupName) throws FileUploadException {
         // TODO Add check for validating group name
 
-        return services.get(groupName).instance().save(file)
+        return getStorageApi(groupName).save(file)
     }
 
     void delete(StoredFile file) {
@@ -29,7 +30,7 @@ class FileUploadService {
             return
         }
 
-        services.get(file.groupName).instance().delete(file)
+        getStorageApi(file.groupName).delete(file)
     }
 
     void cloneFile(StoredFile file, String newGroupName) {
@@ -43,7 +44,7 @@ class FileUploadService {
             return
         }
 
-        services.get(newGroupName).instance().cloneStoredFile(file, newGroupName)
+        getStorageApi(newGroupName).cloneStoredFile(file, newGroupName)
     }
 
     @PostConstruct
@@ -71,5 +72,9 @@ class FileUploadService {
 
             services[service.groupName] = service
         }
+    }
+
+    StorageApi getStorageApi(String groupName) {
+        return services.get(groupName).instance()
     }
 }

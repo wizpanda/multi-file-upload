@@ -1,4 +1,4 @@
-# Multi File Upload
+# Multi File Upload (v0.1.3)
 
 A plugin for multi purpose file upload functionality for Grails 3 application. This plugin allows to upload & save files
 to the following destinations:
@@ -14,7 +14,7 @@ to the following destinations:
 Grails Version | Supported
 --------- | ---------
 <= 3.2.11         |  >= v0.0.6
->= 3.3.0         |  >= v0.0.7
+>= 3.3.0         |  >= v0.0.7 & above
 
 ## Installation & Usage
 

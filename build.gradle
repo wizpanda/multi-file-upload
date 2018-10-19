@@ -27,6 +27,7 @@ dependencies {
     compile "org.grails:grails-core"
     compile group: "org.apache.jclouds", name: "jclouds-core", version: "1.9.2"
     compile group: "org.apache.jclouds", name: "jclouds-allblobstore", version: "1.9.2"
+    compile 'org.grails.plugins:quartz:2.0.13'
     console "org.grails:grails-console"
     profile "org.grails.profiles:plugin"
     provided "org.grails:grails-plugin-services"

@@ -4,14 +4,16 @@ package com.wizpanda.file
  * Job to delete marked stored files from S3.
  *
  * @author Ankit Kumar Singh
- * @since 1.0.3
+ * @since 0.1.3
  */
 class DeleteMarkedFileJob {
 
     FileDeletionService fileDeletionService
 
+    def concurrent = false
+
     static triggers = {
-        simple repeatInterval: 1000l * 60 * 60 * 2 // execute job once in 2 hour
+        simple startDelay:  1000l * 60 * 15, repeatInterval: 1000l * 60 * 60 * 2 // execute job once in 2 hour
     }
 
     def execute() {

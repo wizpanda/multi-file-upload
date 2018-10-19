@@ -8,7 +8,7 @@ import groovy.time.TimeCategory
  * Service class to perform delete operations on file which are marked for deletion.
  *
  * @author Ankit Kumar Singh
- * @since 1.0.3
+ * @since 0.1.3
  */
 @Transactional
 class FileDeletionService {
@@ -31,7 +31,7 @@ class FileDeletionService {
             isNotNull("markedForDeletion")
             le("markedForDeletion", dateForDeletion)
 
-            maxResult(MAX)
+            maxResults(MAX)
         }
 
         storedFileList.each { StoredFile storedFile ->

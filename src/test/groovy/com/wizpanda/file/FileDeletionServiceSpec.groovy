@@ -3,7 +3,7 @@ package com.wizpanda.file
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class FileDeletionServiceSpec extends Specification implements ServiceUnitTest<FileDeletionService>{
+class FileDeletionServiceSpec extends Specification implements ServiceUnitTest<FileDeletionService> {
 
     def setup() {
     }
@@ -12,7 +12,7 @@ class FileDeletionServiceSpec extends Specification implements ServiceUnitTest<F
     }
 
     void "test something"() {
-        expect:"fix me"
-            true == false
+        expect: "fix me"
+        true == false
     }
 }

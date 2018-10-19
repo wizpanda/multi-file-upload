@@ -12,3 +12,4 @@ classes/
 .project
 .settings
 .classpath
+out/

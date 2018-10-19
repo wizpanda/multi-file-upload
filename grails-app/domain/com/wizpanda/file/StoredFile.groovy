@@ -6,7 +6,7 @@ import org.jclouds.blobstore.domain.Blob
 
 class StoredFile {
 
-    boolean markedForDeletion
+    Date markedForDeletion
 
     String originalName
     String name
@@ -20,8 +20,12 @@ class StoredFile {
         Holders.getApplicationContext()['fileUploadService']
     }
 
+    static constraints = {
+        markedForDeletion nullable: true
+    }
+
     StoredFileBlob getBlob() {
-         Blob blob = getFileUploadService().getStorageApi(this.groupName).getBlob(this)
+        Blob blob = getFileUploadService().getStorageApi(this.groupName).getBlob(this)
 
         return new StoredFileBlob(blob)
     }
@@ -33,4 +37,10 @@ class StoredFile {
     void cloneFile(String newGroupName) {
         fileUploadService?.cloneFile(this, newGroupName)
     }
+
+    void markForDeletion() {
+        this.markedForDeletion = new Date()
+        this.save(failOnError: true)
+    }
+
 }

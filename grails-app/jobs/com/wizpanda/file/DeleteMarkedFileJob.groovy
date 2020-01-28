@@ -1,7 +1,7 @@
 package com.wizpanda.file
 
 /**
- * Job to delete marked stored files from S3.
+ * Job to delete marked stored files from S3 whom deleteAfter date is passed.
  *
  * @author Ankit Kumar Singh
  * @since 0.1.3

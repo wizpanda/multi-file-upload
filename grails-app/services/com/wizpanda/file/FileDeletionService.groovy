@@ -5,7 +5,7 @@ import grails.gorm.transactions.Transactional
 import groovy.time.TimeCategory
 
 /**
- * Service class to perform delete operations on file which are marked for deletion.
+ * Service class to perform delete operations on file whom deleteAfter date is passed.
  *
  * @author Ankit Kumar Singh
  * @since 0.1.3
@@ -18,7 +18,7 @@ class FileDeletionService {
     FileUploadService fileUploadService
 
     /**
-     * Method to delete stored files in every 2 hr.
+     * Method to delete stored files in every 2 hr whom deleteAfter date is passed.
      */
     void deleteMarkedFiles() {
         Date dateForDeletion
@@ -28,8 +28,8 @@ class FileDeletionService {
         }
 
         List<StoredFile> storedFileList = StoredFile.createCriteria().list {
-            isNotNull("markedForDeletion")
-            le("markedForDeletion", dateForDeletion)
+            isNotNull("deleteAfter")
+            le("deleteAfter", dateForDeletion)
 
             maxResults(MAX)
         }

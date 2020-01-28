@@ -6,7 +6,8 @@ import org.jclouds.blobstore.domain.Blob
 
 class StoredFile {
 
-    Date markedForDeletion
+    // holds the deletion date for the file.
+    Date deleteAfter
 
     String originalName
     String name
@@ -21,7 +22,7 @@ class StoredFile {
     }
 
     static constraints = {
-        markedForDeletion nullable: true
+        deleteAfter nullable: true
     }
 
     StoredFileBlob getBlob() {
@@ -38,9 +39,8 @@ class StoredFile {
         fileUploadService?.cloneFile(this, newGroupName)
     }
 
-    void markForDeletion() {
-        this.markedForDeletion = new Date()
+    void markForDeletion(Date date) {
+        this.deleteAfter = date ?: new Date()
         this.save(failOnError: true)
     }
-
 }

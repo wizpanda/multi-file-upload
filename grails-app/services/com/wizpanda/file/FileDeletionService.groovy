@@ -1,8 +1,6 @@
 package com.wizpanda.file
 
-
 import grails.gorm.transactions.Transactional
-import groovy.time.TimeCategory
 
 /**
  * Service class to perform delete operations on file whom deleteAfter date is passed.
@@ -21,15 +19,9 @@ class FileDeletionService {
      * Method to delete stored files in every 2 hr whom deleteAfter date is passed.
      */
     void deleteMarkedFiles() {
-        Date dateForDeletion
-
-        use(TimeCategory) {
-            dateForDeletion = new Date() - 2.hours
-        }
-
         List<StoredFile> storedFileList = StoredFile.createCriteria().list {
             isNotNull("deleteAfter")
-            le("deleteAfter", dateForDeletion)
+            le("deleteAfter", new Date())
 
             maxResults(MAX)
         }

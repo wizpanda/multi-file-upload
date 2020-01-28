@@ -1,9 +1,11 @@
 package com.wizpanda.file
 
 import com.wizpanda.file.model.StoredFileBlob
+import grails.compiler.GrailsCompileStatic
 import grails.util.Holders
 import org.jclouds.blobstore.domain.Blob
 
+@GrailsCompileStatic
 class StoredFile {
 
     // holds the deletion date for the file.
@@ -18,7 +20,7 @@ class StoredFile {
     Map meta = [:]
 
     FileUploadService getFileUploadService() {
-        Holders.getApplicationContext()['fileUploadService']
+        Holders.getApplicationContext()["fileUploadService"] as FileUploadService
     }
 
     static constraints = {
@@ -39,8 +41,21 @@ class StoredFile {
         fileUploadService?.cloneFile(this, newGroupName)
     }
 
-    void markForDeletion(Date date) {
-        this.deleteAfter = date ?: new Date()
+    void markForDeletionAfterDays(Integer afterDays) {
+        this.markForDeletion(new Date() + afterDays)
+    }
+
+    /**
+     * Mark this instance to be deleted by the Job.
+     * @param afterDate The date after which, this instance can be deleted.
+     */
+    void markForDeletion(Date afterDate = null) {
+        if (afterDate) {
+            this.deleteAfter = afterDate
+        } else {
+            this.deleteAfter = new Date() + 1       // By default, delete after 1 day
+        }
+
         this.save(failOnError: true)
     }
 }

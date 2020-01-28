@@ -1,11 +1,14 @@
 package com.wizpanda.file
 
+import grails.compiler.GrailsCompileStatic
+
 /**
  * Job to delete marked stored files from S3 whom deleteAfter date is passed.
  *
  * @author Ankit Kumar Singh
  * @since 0.1.3
  */
+@GrailsCompileStatic
 class DeleteMarkedFileJob {
 
     FileDeletionService fileDeletionService

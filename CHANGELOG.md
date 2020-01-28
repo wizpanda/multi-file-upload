@@ -2,7 +2,8 @@
 
 ## v0.1.6
 
-1. Changed field `markedForDeletion` to `deleteAfter` in `StoredFile` domain.
+1. Renamed field `markedForDeletion` to `deleteAfter` in `StoredFile` domain.
+2. By default deleting the file after 1 day.
 
 ## v0.1.5
 

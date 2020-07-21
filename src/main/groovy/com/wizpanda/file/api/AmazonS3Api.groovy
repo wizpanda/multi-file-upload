@@ -5,6 +5,8 @@ import com.wizpanda.file.StoredFile
 import com.wizpanda.file.service.AmazonS3UploaderService
 import grails.util.Environment
 import grails.util.GrailsStringUtils
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import groovy.util.logging.Slf4j
 import org.jclouds.ContextBuilder
 import org.jclouds.aws.s3.AWSS3Client
@@ -20,6 +22,7 @@ import org.jclouds.s3.options.CopyObjectOptions
 import javax.activation.MimetypesFileTypeMap
 
 @Slf4j
+@CompileStatic
 abstract class AmazonS3Api extends AbstractStorageApi {
 
     BlobStore blobStore
@@ -27,6 +30,7 @@ abstract class AmazonS3Api extends AbstractStorageApi {
     BlobStoreContext context
     AmazonS3UploaderService service
 
+    @CompileStatic(TypeCheckingMode.SKIP)       // TODO figure out the issue
     void authenticate() {
         context = ContextBuilder.newBuilder("aws-s3")
                 .credentials(service.accessKey, service.accessSecret)
@@ -149,7 +153,7 @@ abstract class AmazonS3Api extends AbstractStorageApi {
     }
 
     void setCacheControl(MutableObjectMetadataImpl mutableObjectMetadata) {
-        Long cacheControlSeconds = this.service.flatGroupConfig.cacheControlSeconds
+        Long cacheControlSeconds = this.service.flatGroupConfig.cacheControlSeconds as Long
 
         if (!cacheControlSeconds) {
             return

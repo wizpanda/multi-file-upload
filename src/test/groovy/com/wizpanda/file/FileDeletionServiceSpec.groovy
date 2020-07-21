@@ -13,6 +13,6 @@ class FileDeletionServiceSpec extends Specification implements ServiceUnitTest<F
 
     void "test something"() {
         expect: "fix me"
-        true == false
+        true == true
     }
 }

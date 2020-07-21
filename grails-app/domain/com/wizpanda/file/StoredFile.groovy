@@ -5,18 +5,37 @@ import grails.compiler.GrailsCompileStatic
 import grails.util.Holders
 import org.jclouds.blobstore.domain.Blob
 
+/**
+ * The Grails domain class which holds the metadata of the stored file.
+ *
+ * @author Shashank Agrawal
+ */
 @GrailsCompileStatic
 class StoredFile {
 
-    // holds the deletion date for the file.
+    /**
+     * Holds the deletion date after which the file can be deleted.
+     */
     Date deleteAfter
 
+    /**
+     * The name of the file which was uploaded originally from the client side.
+     */
     String originalName
     String name
+
+    /**
+     * Final public URL of the file.
+     */
     String url
+
+    /**
+     * The name of the group as defined in the configuration.
+     */
     String groupName
     Long size
     Date uploadedOn = new Date()
+
     Map meta = [:]
 
     FileUploadService getFileUploadService() {
@@ -47,7 +66,7 @@ class StoredFile {
 
     /**
      * Mark this instance to be deleted by the Job.
-     * @param afterDate The date after which, this instance can be deleted.
+     * @param afterDate The date after which, this instance & the file can be deleted. By default, the file will be deleted after 7 days.
      */
     void markForDeletion(Date afterDate = null) {
         if (afterDate) {

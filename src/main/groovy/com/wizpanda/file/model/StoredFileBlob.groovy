@@ -1,5 +1,6 @@
 package com.wizpanda.file.model
 
+import groovy.transform.CompileStatic
 import org.jclouds.blobstore.domain.Blob
 
 /**
@@ -7,6 +8,7 @@ import org.jclouds.blobstore.domain.Blob
  * @author Ankit Kumar Singh
  * @since 0.1.3
  */
+@CompileStatic
 class StoredFileBlob {
 
     Blob blob
@@ -23,7 +25,7 @@ class StoredFileBlob {
      */
     String getText() {
         if (this.rawContent instanceof InputStream) {
-            InputStream rawStream = this.rawContent
+            InputStream rawStream = this.rawContent as InputStream
             return rawStream.text
         }
 
@@ -37,7 +39,7 @@ class StoredFileBlob {
      */
     String getText(String charset) {
         if (this.rawContent instanceof InputStream) {
-            InputStream rawStream = this.rawContent
+            InputStream rawStream = this.rawContent as InputStream
             return rawStream.getText(charset)
         }
 

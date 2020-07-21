@@ -1,9 +1,11 @@
 package com.wizpanda.file.utils
 
+import groovy.transform.CompileStatic
 import org.springframework.web.multipart.MultipartFile
 
 import java.nio.file.Files
 
+@CompileStatic
 class FileUtils {
 
     /**
@@ -12,8 +14,7 @@ class FileUtils {
      *
      * @param multipartFile
      * @return Saved file in a temporary location
-     * @throws FileNotFoundException
-     * @throws IOException
+     * @throws FileNotFoundException* @throws IOException
      */
     static File saveTemporarily(MultipartFile multipartFile) throws IllegalStateException, IOException {
         if (!multipartFile || multipartFile.isEmpty()) {

@@ -1,20 +1,12 @@
-# Multi File Upload (v0.1.3)
+# Grails Multi File Upload (v0.1.3)
 
-A plugin for multi purpose file upload functionality for Grails 3 application. This plugin allows to upload & save files
+A plugin for multi-purpose file upload functionality for Grails 3+ application. This plugin allows uploading & saving files
 to the following destinations:
 
-1. To the local server or the local system
-2. To the Amazon S3 storage (can be deleted as well)
-3. To the Rackspace cloud storage (coming soon)
+1. To the local server or the local system.
+2. To the Amazon S3 storage (can be deleted as well).
 
-**The upload APIs are highly customizable so you can always override the classes or add your own implementation.**
-
-## Compatibility
-
-Grails Version | Supported
---------- | ---------
-<= 3.2.11         |  >= v0.0.6
->= 3.3.0         |  >= v0.0.7 & above
+**The upload APIs are highly customizable, so you can always override the classes or add your own implementation.**
 
 ## Installation & Usage
 
@@ -43,27 +35,36 @@ In the `application.groovy` file, define your groups & AWS configuration. For ex
 fileUpload {
     global {
         amazon {
-            accessKey = "ALIAI4VT2YYNNPSV3YGQ2"
-            accessSecret = "803a3E2Ul0HkImA2kLQAyF4ngM3P6StQGEMUC"
+            accessKey = "EXAMPLE-KEY-ALIAI4VT211NNPSV3YGQ2"
+            accessSecret = "EXAMPLE-SECRET-803a3E2Ul0HkImA2kLQAyF4ngM3P6St"
         }
     }
     groups {
-        sliderImages {
+        fooSliderImages {
+            // Add the service which you want to configure here
             service = com.wizpanda.file.service.AmazonS3UploaderService
-            container = "example-slider-images"
+            container = "foo-images"
             cacheControlSeconds = 604800    // 1 week
         }
     }
 }
-
 ```
+
+Read [docs/aws-access-configuration.md](docs/aws-access-configuration.md) to read how to get the access key & secret for AWS S3.
 
 ### Using in controllers or services
 
 ```groovy
-fileUploadService.save(params.file, 'sliderImages')
-
+fileUploadService.save(params.file, "fooSliderImages")
 ```
+
+## Uses of containers/buckets
+
+The containers defined in the configuration above i.e. `foo-images` are suffixed with environment name for non-production environment.
+For example, an S3 container with the name `foo-images-development` will be used when running locally. So that container must be there
+before.
+
+**This means, you don't need to use Grails environments to use the different buckets for different environments.** 
 
 ## Releasing new version
 

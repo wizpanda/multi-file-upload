@@ -1,4 +1,6 @@
-# Grails Multi File Upload (v0.1.3)
+# Grails Multi File Upload
+
+[![GitHub version](https://badge.fury.io/gh/wizpanda%2Fmulti-file-upload.svg)](https://badge.fury.io/gh/wizpanda%2Fmulti-file-upload)
 
 A plugin for multi-purpose file upload functionality for Grails 3+ application. This plugin allows uploading & saving files
 to the following destinations:

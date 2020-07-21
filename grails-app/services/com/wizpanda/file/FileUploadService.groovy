@@ -4,14 +4,30 @@ import com.wizpanda.file.api.StorageApi
 import com.wizpanda.file.exception.FileUploadException
 import com.wizpanda.file.exception.InvalidFileGroupException
 import com.wizpanda.file.service.UploaderService
+import grails.compiler.GrailsCompileStatic
+import groovy.util.logging.Slf4j
 import org.springframework.web.multipart.MultipartFile
 
 import javax.annotation.PostConstruct
 
+/**
+ * The primary service for starting the file upload.
+ *
+ * @author Shashank Agrawal
+ */
+@Slf4j
+@GrailsCompileStatic
 class FileUploadService {
 
     private static Map<String, UploaderService> services = [:]
 
+    /**
+     * Save a given Multipart file based on the given group name.
+     * @param multipartFile
+     * @param groupName As defined in the configuration under `fileUpload` -> `groups`.
+     * @return
+     * @throws FileUploadException
+     */
     StoredFile save(MultipartFile multipartFile, String groupName) throws FileUploadException {
         // TODO Add check for validating group name
 
@@ -52,9 +68,10 @@ class FileUploadService {
         //log.debug "Verifying all service"
         println "Verifying all service"
 
-        ConfigHelper.allGroups.each { Map.Entry groupConfigEntry ->
-            String groupName = groupConfigEntry.key.toString()
-            Map groupConfigValue = groupConfigEntry.value
+        ConfigHelper.allGroups.each { String groupName, Map groupConfigValue ->
+            if (!groupConfigValue) {
+                throw new InvalidFileGroupException("The configuration for group [$groupName] is not configured")
+            }
 
             if (!groupConfigValue.service) {
                 throw new InvalidFileGroupException("The service API missing for [${groupName}]")

@@ -1,12 +1,14 @@
 package com.wizpanda.file.api
 
 import com.wizpanda.file.service.AmazonS3UploaderService
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.jclouds.aws.s3.blobstore.options.AWSS3PutObjectOptions
 import org.jclouds.s3.domain.S3Object
 import org.jclouds.s3.domain.internal.MutableObjectMetadataImpl
 
 @Slf4j
+@CompileStatic
 class AmazonS3PermanentURLApi extends AmazonS3Api {
 
     AmazonS3PermanentURLApi(AmazonS3UploaderService service) {
@@ -23,7 +25,7 @@ class AmazonS3PermanentURLApi extends AmazonS3Api {
         S3Object s3Object = client.newS3Object()
         s3Object.setPayload(this.rawFile)
 
-        MutableObjectMetadataImpl mutableObjectMetadata = s3Object.getMetadata()
+        MutableObjectMetadataImpl mutableObjectMetadata = s3Object.getMetadata() as MutableObjectMetadataImpl
         mutableObjectMetadata.setKey(fileName)
         setCacheControl(mutableObjectMetadata)
         /**

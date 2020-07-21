@@ -3,8 +3,10 @@ package com.wizpanda.file.api
 import com.wizpanda.file.StoredFile
 import com.wizpanda.file.exception.FileUploadException
 import com.wizpanda.file.utils.FileUtils
+import groovy.transform.CompileStatic
 import org.springframework.web.multipart.MultipartFile
 
+@CompileStatic
 abstract class AbstractStorageApi implements StorageApi {
 
     File rawFile

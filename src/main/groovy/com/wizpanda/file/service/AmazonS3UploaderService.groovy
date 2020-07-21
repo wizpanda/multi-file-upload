@@ -1,10 +1,12 @@
 package com.wizpanda.file.service
 
 import com.wizpanda.file.ConfigHelper
-import com.wizpanda.file.exception.InvalidFileGroupException
 import com.wizpanda.file.api.AmazonS3PermanentURLApi
 import com.wizpanda.file.api.StorageApi
+import com.wizpanda.file.exception.InvalidFileGroupException
+import groovy.transform.CompileStatic
 
+@CompileStatic
 class AmazonS3UploaderService extends UploaderService {
 
     String accessKey, accessSecret, container

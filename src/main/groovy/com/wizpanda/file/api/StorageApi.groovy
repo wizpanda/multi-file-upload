@@ -3,9 +3,11 @@ package com.wizpanda.file.api
 import com.wizpanda.file.StoredFile
 import com.wizpanda.file.exception.FileUploadException
 import com.wizpanda.file.service.UploaderService
+import groovy.transform.CompileStatic
 import org.jclouds.blobstore.domain.Blob
 import org.springframework.web.multipart.MultipartFile
 
+@CompileStatic
 interface StorageApi {
 
     UploaderService service

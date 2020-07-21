@@ -13,7 +13,7 @@ class DeleteMarkedFileJob {
     def concurrent = false
 
     static triggers = {
-        simple startDelay:  1000l * 60 * 15, repeatInterval: 1000l * 60 * 60 * 2 // execute job once in 2 hour
+        simple startDelay: 1000l * 60 * 15, repeatInterval: 1000l * 60 * 60 * 2 // execute job once in 2 hour
     }
 
     def execute() {

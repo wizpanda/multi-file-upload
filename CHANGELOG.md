@@ -1,9 +1,4 @@
-# Change Logs
-
-## v0.1.7, 0.1.8
-
-1. Using `@GrailsCompileStatic` & `@CompileStatic` in all files for performance.
-2. Switched to GitHub packages.
+# Changelogs
 
 ## v0.1.6
 

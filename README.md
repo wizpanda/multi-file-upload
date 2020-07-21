@@ -1,6 +1,4 @@
-# Grails Multi File Upload
-
-[![GitHub version](https://badge.fury.io/gh/wizpanda%2Fmulti-file-upload.svg)](https://badge.fury.io/gh/wizpanda%2Fmulti-file-upload)  
+# Grails Multi File Upload (v0.1.3)
 
 A plugin for multi-purpose file upload functionality for Grails 3+ application. This plugin allows uploading & saving files
 to the following destinations:
@@ -19,7 +17,7 @@ Add the following to `build.gradle` file of your Grails 3 application
 **Under `repositories` section**
 
 ```groovy
-maven { url "https://maven.pkg.github.com/wizpanda/multi-file-upload" }
+maven { url "http://dl.bintray.com/wizpanda/grails-plugins" }
 ```
 
 **Under `dependencies` section**

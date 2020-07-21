@@ -8,35 +8,13 @@ buildscript {
     }
 }
 
-
-plugins {
-    id("maven-publish")
-}
-
-version "0.1.8"
+version "0.1.6"
 group "com.wizpanda.plugins"
-
-publishing {
-    publications {
-        gpr(MavenPublication) {
-            from(components.java)
-        }
-    }
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/wizpanda/multi-file-upload")
-            credentials {
-                username = System.getenv("githubUser")
-                password = System.getenv("githubPassword")
-            }
-        }
-    }
-}
 
 apply plugin: "eclipse"
 apply plugin: "idea"
 apply plugin: "org.grails.grails-plugin"
+apply plugin: "org.grails.grails-plugin-publish"
 
 repositories {
     mavenLocal()
@@ -62,6 +40,16 @@ bootRun {
     jvmArgs('-Dspring.output.ansi.enabled=always')
     addResources = true
 }
-
 // enable if you wish to package this plugin as a standalone application
 bootRepackage.enabled = false
+grailsPublish {
+    githubSlug = "wizpanda/multi-file-upload"
+    userOrg = "wizpanda"
+    repo = "grails-plugins"
+    license {
+        name = "Apache-2.0"
+    }
+    title = "Multi File Upload"
+    desc = "A Grails plugin to provide multi purpose file upload functionality."
+    developers = [sagrawal31: "Shashank Agrawal"]
+}

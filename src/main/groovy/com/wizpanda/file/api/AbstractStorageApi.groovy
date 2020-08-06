@@ -2,6 +2,7 @@ package com.wizpanda.file.api
 
 import com.wizpanda.file.StoredFile
 import com.wizpanda.file.exception.FileUploadException
+import com.wizpanda.file.service.UploaderService
 import com.wizpanda.file.utils.FileUtils
 import groovy.transform.CompileStatic
 import org.springframework.web.multipart.MultipartFile
@@ -11,6 +12,11 @@ abstract class AbstractStorageApi implements StorageApi {
 
     File rawFile
     StoredFile gormFile
+    UploaderService service
+
+    AbstractStorageApi(UploaderService service) {
+        this.service = service
+    }
 
     StoredFile save(MultipartFile multipartFile) throws FileUploadException {
         File temporaryFile

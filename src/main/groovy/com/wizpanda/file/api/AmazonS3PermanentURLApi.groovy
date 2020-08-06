@@ -12,7 +12,7 @@ import org.jclouds.s3.domain.internal.MutableObjectMetadataImpl
 class AmazonS3PermanentURLApi extends AmazonS3Api {
 
     AmazonS3PermanentURLApi(AmazonS3UploaderService service) {
-        this.service = service
+        super(service)
     }
 
     @Override

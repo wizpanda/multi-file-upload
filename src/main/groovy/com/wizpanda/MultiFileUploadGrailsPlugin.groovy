@@ -1,5 +1,6 @@
 package com.wizpanda
 
+import com.wizpanda.file.FileUploadService
 import grails.plugins.Plugin
 
 class MultiFileUploadGrailsPlugin extends Plugin {
@@ -8,7 +9,7 @@ class MultiFileUploadGrailsPlugin extends Plugin {
     def grailsVersion = "3.1.11 > *"
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
-        "grails-app/views/error.gsp"
+            "grails-app/views/error.gsp"
     ]
 
     String title = "Multi File Upload Plugin" // Headline display name of the plugin
@@ -20,5 +21,12 @@ class MultiFileUploadGrailsPlugin extends Plugin {
 
     Map issueManagement = [system: "GITHUB", url: "https://github.com/wizpanda/multi-file-upload/issues"]
 
-    Map scm = [ url: "https://github.com/wizpanda/multi-file-upload" ]
+    Map scm = [url: "https://github.com/wizpanda/multi-file-upload"]
+
+    @Override
+    void doWithApplicationContext() {
+        FileUploadService fileUploadService = applicationContext.fileUploadService
+
+        fileUploadService.init()
+    }
 }

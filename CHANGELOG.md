@@ -1,5 +1,10 @@
 # Change Logs
 
+## v0.1.9
+
+1. Fixed Java inheritance problem.
+2. Using Plugin hook `doWithApplicationContext` instead of `@PostConstruct`.
+
 ## v0.1.7, 0.1.8
 
 1. Using `@GrailsCompileStatic` & `@CompileStatic` in all files for performance.

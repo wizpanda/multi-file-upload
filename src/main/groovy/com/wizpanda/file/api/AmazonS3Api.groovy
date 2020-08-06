@@ -30,6 +30,11 @@ abstract class AmazonS3Api extends AbstractStorageApi {
     BlobStoreContext context
     AmazonS3UploaderService service
 
+    AmazonS3Api(AmazonS3UploaderService service) {
+        super(service)
+        this.service = service
+    }
+
     @CompileStatic(TypeCheckingMode.SKIP)       // TODO figure out the issue
     void authenticate() {
         context = ContextBuilder.newBuilder("aws-s3")

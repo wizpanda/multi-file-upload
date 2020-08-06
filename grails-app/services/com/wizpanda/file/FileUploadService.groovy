@@ -8,8 +8,6 @@ import grails.compiler.GrailsCompileStatic
 import groovy.util.logging.Slf4j
 import org.springframework.web.multipart.MultipartFile
 
-import javax.annotation.PostConstruct
-
 /**
  * The primary service for starting the file upload.
  *
@@ -63,8 +61,7 @@ class FileUploadService {
         getStorageApi(newGroupName).cloneStoredFile(file, newGroupName)
     }
 
-    @PostConstruct
-    void verifyConfig() {
+    void init() {
         //log.debug "Verifying all service"
         println "Verifying all service"
 

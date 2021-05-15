@@ -19,7 +19,7 @@ Add the following to `build.gradle` file of your Grails 3 application
 **Under `repositories` section**
 
 ```groovy
-maven { url "http://dl.bintray.com/wizpanda/grails-plugins" }
+maven { url "https://wizpanda.jfrog.io/artifactory/default-maven-local" }
 ```
 
 **Under `dependencies` section**

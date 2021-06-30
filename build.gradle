@@ -5,6 +5,7 @@ buildscript {
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+        classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '4.+')
     }
 }
 
@@ -14,7 +15,8 @@ group "com.wizpanda.plugins"
 apply plugin: "eclipse"
 apply plugin: "idea"
 apply plugin: "org.grails.grails-plugin"
-apply plugin: "org.grails.grails-plugin-publish"
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.artifactory'
 
 repositories {
     mavenLocal()
@@ -42,14 +44,6 @@ bootRun {
 }
 // enable if you wish to package this plugin as a standalone application
 bootRepackage.enabled = false
-grailsPublish {
-    githubSlug = "wizpanda/multi-file-upload"
-    userOrg = "wizpanda"
-    repo = "grails-plugins"
-    license {
-        name = "Apache-2.0"
-    }
-    title = "Multi File Upload"
-    desc = "A Grails plugin to provide multi purpose file upload functionality."
-    developers = [sagrawal31: "Shashank Agrawal"]
-}
+
+apply from: "https://raw.githubusercontent.com/wizpanda/gradle-common/main/bump-version.gradle"
+apply from: "https://raw.githubusercontent.com/wizpanda/gradle-common/main/grails-plugin-jfrog-publish.gradle"

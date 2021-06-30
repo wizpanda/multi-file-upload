@@ -67,9 +67,3 @@ For example, an S3 container with the name `foo-images-development` will be used
 before.
 
 **This means, you don't need to use Grails environments to use the different buckets for different environments.** 
-
-## Releasing new version
-
-1. Change the version in the `build.gradle`.
-2. Make sure Bintray configuration are configured properly as given [here](https://github.com/grails/grails-core/blob/639d7039d24031dbc1353f95b6d2c88a100da850/grails-gradle-plugin/src/main/groovy/org/grails/gradle/plugin/publishing/GrailsCentralPublishGradlePlugin.groovy).
-2. Run `gradle bintrayUpload`

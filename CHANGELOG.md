@@ -1,5 +1,9 @@
 # Change Logs
 
+## v0.1.10
+
+Use JitPack
+
 ## v0.1.9
 
 1. Fixed Java inheritance problem.
